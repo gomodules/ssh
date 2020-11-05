@@ -39,44 +39,11 @@ import (
 	"time"
 
 	"golang.org/x/crypto/ssh"
-
-	utilnet "k8s.io/apimachinery/pkg/util/net"
-	"k8s.io/apimachinery/pkg/util/runtime"
-	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/component-base/metrics"
-	"k8s.io/component-base/metrics/legacyregistry"
+	"gomodules.xyz/runtime"
+	utilnet "gomodules.xyz/ssh/util/net"
+	"gomodules.xyz/wait"
 	"k8s.io/klog"
 )
-
-/*
- * By default, all the following metrics are defined as falling under
- * ALPHA stability level https://github.com/kubernetes/enhancements/blob/master/keps/sig-instrumentation/20190404-kubernetes-control-plane-metrics-stability.md#stability-classes)
- *
- * Promoting the stability level of the metric is a responsibility of the component owner, since it
- * involves explicitly acknowledging support for the metric across multiple releases, in accordance with
- * the metric stability policy.
- */
-var (
-	tunnelOpenCounter = metrics.NewCounter(
-		&metrics.CounterOpts{
-			Name:           "ssh_tunnel_open_count",
-			Help:           "Counter of ssh tunnel total open attempts",
-			StabilityLevel: metrics.ALPHA,
-		},
-	)
-	tunnelOpenFailCounter = metrics.NewCounter(
-		&metrics.CounterOpts{
-			Name:           "ssh_tunnel_open_fail_count",
-			Help:           "Counter of ssh tunnel failed open attempts",
-			StabilityLevel: metrics.ALPHA,
-		},
-	)
-)
-
-func init() {
-	legacyregistry.MustRegister(tunnelOpenCounter)
-	legacyregistry.MustRegister(tunnelOpenFailCounter)
-}
 
 // TODO: Unit tests for this code, we can spin up a test SSH server with instructions here:
 // https://godoc.org/golang.org/x/crypto/ssh#ServerConn
@@ -103,10 +70,6 @@ func makeSSHTunnel(user string, signer ssh.Signer, host string) (*sshTunnel, err
 func (s *sshTunnel) Open() error {
 	var err error
 	s.client, err = realTimeoutDialer.Dial("tcp", net.JoinHostPort(s.Host, s.SSHPort), s.Config)
-	tunnelOpenCounter.Inc()
-	if err != nil {
-		tunnelOpenFailCounter.Inc()
-	}
 	return err
 }
 

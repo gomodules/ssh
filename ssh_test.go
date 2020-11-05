@@ -28,8 +28,7 @@ import (
 	"time"
 
 	"golang.org/x/crypto/ssh"
-
-	"k8s.io/apimachinery/pkg/util/wait"
+	"gomodules.xyz/wait"
 	"k8s.io/klog"
 )
 
