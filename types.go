@@ -27,13 +27,12 @@ type SSHKey struct {
 
 // Source: https://github.com/flynn/flynn/blob/master/pkg/sshkeygen/sshkeygen.go
 // This generates a single RSA 2048-bit SSH key
-//AWS Key pair:
+// AWS Key pair:
 // https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#verify-key-pair-fingerprints
 // https://forums.aws.amazon.com/thread.jspa?messageID=386670&tstart=0
 //
 // From PUB key: ssh-keygen -f ~/.ssh/id_rsa.pub -e -m PKCS8 | openssl pkey -pubin -outform DER | openssl md5 -c
 // From PRIV key: openssl rsa -in ~/.ssh/id_rsa -pubout -outform DER | openssl md5 -c
-//
 func NewSSHKeyPair() (*SSHKey, error) {
 	rsaKey, err := rsa.GenerateKey(rand.Reader, RSABitSize)
 	if err != nil {

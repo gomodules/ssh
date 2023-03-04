@@ -29,7 +29,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 	"gomodules.xyz/wait"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 type testSSHServer struct {
@@ -261,8 +261,7 @@ func (d *mockSSHDialer) Dial(network, addr string, config *ssh.ClientConfig) (*s
 	return nil, fmt.Errorf("mock error from Dial")
 }
 
-type mockSigner struct {
-}
+type mockSigner struct{}
 
 func (s *mockSigner) PublicKey() ssh.PublicKey {
 	panic("mockSigner.PublicKey not implemented")
@@ -326,7 +325,6 @@ func TestSSHUser(t *testing.T) {
 		// (No way to test Auth - nothing exported?)
 
 	}
-
 }
 
 func TestTimeoutDialer(t *testing.T) {

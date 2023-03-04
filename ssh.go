@@ -41,7 +41,7 @@ import (
 	"gomodules.xyz/runtime"
 	utilnet "gomodules.xyz/ssh/util/net"
 	"gomodules.xyz/wait"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 // TODO: Unit tests for this code, we can spin up a test SSH server with instructions here:

@@ -25,7 +25,7 @@ import (
 	"strings"
 
 	"golang.org/x/net/http2"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 var defaultTransport = http.DefaultTransport.(*http.Transport)
